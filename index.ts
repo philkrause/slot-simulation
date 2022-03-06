@@ -1,4 +1,4 @@
-var query = require('cli-interact').getYesNo;
+const query = require('cli-interact').getYesNo;
 
 //Reel Distribution
 //1Jack , 2Queen, 3King, 4Ace, 5Heart, 6Club, 7Diamond, 8Spade
@@ -24,7 +24,7 @@ const spadePayout: number = 2
 const payOutArray: number[] = [jackPayout, queenPayout, kingPayout, acePayout, heartPayout, clubPayout, diamondPayout, spadePayout]
 
 //Control the Amount of Spins for the Simulator
-const totalSpins: number = 1000
+const totalSpins: number = 100
 const totalReels: number = 5
 const reelLength: number = reel_1.length
 let totalCells: number = reelLength * totalReels
@@ -61,6 +61,7 @@ const payOutLine: Function = (symbol: number, multiplier: number) => {
         const payout = payOutArray[index];
         if (symbol == index) {
             wins++
+            console.log(`PAYOUT: ${payout}`)
             pay = payout * multiplier
             totalCashWon = totalCashWon + (pay)
             symbolWins[symbol - 1] += 1
@@ -181,8 +182,8 @@ for (let index = 0; index < totalSpins; index++) {
     let lineDiagnalTopDown: number[] = [cell_1_Outcome, cell_7_Outcome, cell_13_Outcome, cell_19_Outcome, cell_25_Outcome]
     let lineDiagnalDownTop: number[] = [cell_21_Outcome, cell_17_Outcome, cell_13_Outcome, cell_9_Outcome, cell_5_Outcome]
 
-    //let allLines: number[] = lineAcross_1.concat(lineAcross_2).concat(lineAcross_3).concat(lineAcross_4).concat(lineAcross_5)
-    //console.log(allLines)
+    let allLines: number[] = lineAcross_1.concat(lineAcross_2).concat(lineAcross_3).concat(lineAcross_4).concat(lineAcross_5)
+    console.log(allLines)
     console.log(`[ ${symbol[lineAcross_1[0]]}, ${symbol[lineAcross_1[1]]}, ${symbol[lineAcross_1[2]]}, ${symbol[lineAcross_1[3]]}, ${symbol[lineAcross_1[4]]} ]`)
     console.log(`[ ${symbol[lineAcross_2[0]]}, ${symbol[lineAcross_2[1]]}, ${symbol[lineAcross_2[2]]}, ${symbol[lineAcross_2[3]]}, ${symbol[lineAcross_2[4]]} ]`)
     console.log(`[ ${symbol[lineAcross_3[0]]}, ${symbol[lineAcross_3[1]]}, ${symbol[lineAcross_3[2]]}, ${symbol[lineAcross_3[3]]}, ${symbol[lineAcross_3[4]]} ]`)
@@ -214,7 +215,7 @@ let winRatio: number = allWins / losses
 //Logs
 console.log(`TotalCash Bet: ${totalBet}`)
 console.log(`Total Cash Won: ${totalCashWon}`)
-console.log(`Return to Player: ${returnToPlayer}`)
+console.log(`Return to Player: ${returnToPlayer}%`)
 console.log(`TotalWin: ${wins}`)
 console.log(`Total Losses: ${losses}`)
 console.log(`Win Ratio: ${winRatio}`)
@@ -226,4 +227,4 @@ console.log(`AceWins: ${symbolWins[3]}`)
 console.log(`HeartWins: ${symbolWins[4]}`)
 console.log(`ClubWins: ${symbolWins[5]}`)
 console.log(`DiamondWins: ${symbolWins[6]}`)
-console.log(`SpadeWins: ${symbolWins[7+1]}`)
+console.log(`SpadeWins: ${symbolWins[7-1]}`)
