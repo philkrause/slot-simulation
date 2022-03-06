@@ -6,7 +6,7 @@ const reel_3: number[] = [1, 1, 1, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 
 const reel_4: number[] = [1, 1, 1, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 8, 8, 8, 8]
 const reel_5: number[] = [1, 1, 1, 1, 1, 1, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 8, 8, 8, 8]
 
-const symbols: string[] = ["X", "Jacks", "Queens", "Kings", "Aces", "Hearts","Clubs","Diamond","Spades"]
+const symbols: string[] = ["X", "Jacks", "Queens", "Kings", "Aces", "Hearts", "Clubs", "Diamond", "Spades"]
 const symbol: string[] = ["X", "J", "Q", "K", "A", "H", "C", "D", "S"]
 
 //Payouts 
@@ -40,6 +40,7 @@ let losses: number = 0
 let wins: number = 0
 
 let payperSpin: number = 0
+let pay: number = 0
 let totalBet: number = 0
 let totalCashWon: number = 0
 let returnToPlayer: number
@@ -50,7 +51,6 @@ const createRandomNumber: Function = (): number => {
     return rng
 }
 
-let pay: number = 0
 
 //Determine the payout for the winning symbol and multiply
 const payOutLine: Function = (symbol: number, multiplier: number) => {
@@ -61,7 +61,6 @@ const payOutLine: Function = (symbol: number, multiplier: number) => {
             pay = payout * multiplier
             totalCashWon = totalCashWon + (pay)
             symbolWins[symbol - 1] += 1
-
         }
     }
     return pay
@@ -76,9 +75,9 @@ const allEqual: Function = (line: number[]) => {
 //Checks what symbol won and call Payout: function(symbol, multiplier)
 const verifyLine: Function = (line: number[]) => {
     if (line) {
-        
+
         let winningSymbol: number = line[0]
-        
+
         if (allEqual(line)) {
             payperSpin += payOutLine(winningSymbol, 5)
             console.log(`5 ${symbols[winningSymbol]} in a Row! Pays: ${pay}`)
@@ -174,7 +173,7 @@ for (let index = 0; index < totalSpins; index++) {
 
     //let allLines: number[] = lineAcross_1.concat(lineAcross_2).concat(lineAcross_3).concat(lineAcross_4).concat(lineAcross_5)
     //console.log(allLines)
-    console.log(`[ ${symbol[lineAcross_1[0]]}, ${symbol[lineAcross_1[1]]}, ${symbol[lineAcross_1[2]]}, ${symbol[lineAcross_1[3]]}, ${symbol[lineAcross_1[4]]} ]`)        
+    console.log(`[ ${symbol[lineAcross_1[0]]}, ${symbol[lineAcross_1[1]]}, ${symbol[lineAcross_1[2]]}, ${symbol[lineAcross_1[3]]}, ${symbol[lineAcross_1[4]]} ]`)
     console.log(`[ ${symbol[lineAcross_2[0]]}, ${symbol[lineAcross_2[1]]}, ${symbol[lineAcross_2[2]]}, ${symbol[lineAcross_2[3]]}, ${symbol[lineAcross_2[4]]} ]`)
     console.log(`[ ${symbol[lineAcross_3[0]]}, ${symbol[lineAcross_3[1]]}, ${symbol[lineAcross_3[2]]}, ${symbol[lineAcross_3[3]]}, ${symbol[lineAcross_3[4]]} ]`)
     console.log(`[ ${symbol[lineAcross_4[0]]}, ${symbol[lineAcross_4[1]]}, ${symbol[lineAcross_4[2]]}, ${symbol[lineAcross_4[3]]}, ${symbol[lineAcross_4[4]]} ]`)
@@ -200,7 +199,7 @@ returnToPlayer = (totalCashWon / totalBet) * 100
 
 let stake: number = totalCashWon - totalBet
 let allWins: number = jackWins + queenWins + aceWins + heartWins + clubWins + diamondWins + spadeWins
-let winRatio: number = allWins/losses
+let winRatio: number = allWins / losses
 
 console.log(`TotalCash Bet: ${totalBet}`)
 console.log(`Total Cash Won: ${totalCashWon}`)
