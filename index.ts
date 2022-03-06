@@ -6,6 +6,7 @@ const reel_3: number[] = [1, 1, 1, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 
 const reel_4: number[] = [1, 1, 1, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 8, 8, 8, 8]
 const reel_5: number[] = [1, 1, 1, 1, 1, 1, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 8, 8, 8, 8]
 
+//Used for Logs
 const symbols: string[] = ["X", "Jacks", "Queens", "Kings", "Aces", "Hearts", "Clubs", "Diamond", "Spades"]
 const symbol: string[] = ["X", "J", "Q", "K", "A", "H", "C", "D", "S"]
 
@@ -20,6 +21,7 @@ const diamondPayout: number = 1.75
 const spadePayout: number = 2
 const payOutArray: number[] = [jackPayout, queenPayout, kingPayout, acePayout, heartPayout, clubPayout, diamondPayout, spadePayout]
 
+//Control the Amount of Spins for the Simulator
 const totalSpins: number = 100
 const totalReels: number = 5
 const reelLength: number = reel_1.length
