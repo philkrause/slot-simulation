@@ -1,10 +1,12 @@
+var query = require('cli-interact').getYesNo;
+
 //Reel Distribution
 //1Jack , 2Queen, 3King, 4Ace, 5Heart, 6Club, 7Diamond, 8Spade
-const reel_1: number[] = [1, 1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6, 7, 8, 8, 8, 8]
-const reel_2: number[] = [1, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6, 7, 8, 8, 8, 8]
-const reel_3: number[] = [1, 1, 1, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 8, 8, 8, 8]
-const reel_4: number[] = [1, 1, 1, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 8, 8, 8, 8]
-const reel_5: number[] = [1, 1, 1, 1, 1, 1, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 8, 8, 8, 8]
+const reel_1: number[] = [1, 1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+const reel_2: number[] = [1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+const reel_3: number[] = [1, 1, 1, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+const reel_4: number[] = [1, 1, 1, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+const reel_5: number[] = [1, 1, 1, 1, 1, 1, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
 
 //Used for Logs
 const symbols: string[] = ["X", "Jacks", "Queens", "Kings", "Aces", "Hearts", "Clubs", "Diamond", "Spades"]
@@ -22,7 +24,7 @@ const spadePayout: number = 2
 const payOutArray: number[] = [jackPayout, queenPayout, kingPayout, acePayout, heartPayout, clubPayout, diamondPayout, spadePayout]
 
 //Control the Amount of Spins for the Simulator
-const totalSpins: number = 100
+const totalSpins: number = 1000
 const totalReels: number = 5
 const reelLength: number = reel_1.length
 let totalCells: number = reelLength * totalReels
@@ -100,17 +102,17 @@ const verifyLine: Function = (line: number[]) => {
 //Spins
 for (let index = 0; index < totalSpins; index++) {
 
-//increase bet by $1.00 each spin
+    //increase bet by $1.00 each spin
     totalBet++
 
-//Create 5 Random Numbers for all 5 Reels
+    //Create 5 Random Numbers for all 5 Reels
     let rng_1: number = createRandomNumber()
     let rng_2: number = createRandomNumber()
     let rng_3: number = createRandomNumber()
     let rng_4: number = createRandomNumber()
     let rng_5: number = createRandomNumber()
 
-//Determine Outcome of All Postiions
+    //Determine Outcome of All Postiions
     let cell_1: number = rng_1 + 4
     let cell_2: number = rng_2 + 4
     let cell_3: number = rng_3 + 4
@@ -141,7 +143,7 @@ for (let index = 0; index < totalSpins; index++) {
     let cell_24: number = rng_4
     let cell_25: number = rng_5
 
-//Pass the Outcomes into the Reels to determine the symbol
+    //Pass the Outcomes into the Reels to determine the symbol
     let cell_1_Outcome: number = reel_1[cell_1]
     let cell_2_Outcome: number = reel_2[cell_2]
     let cell_3_Outcome: number = reel_3[cell_3]
@@ -168,14 +170,14 @@ for (let index = 0; index < totalSpins; index++) {
     let cell_24_Outcome: number = reel_4[cell_24]
     let cell_25_Outcome: number = reel_5[cell_25]
 
-//Determine the Line Payouts
+    //Determine the Line Payouts
     let lineAcross_1: number[] = [cell_1_Outcome, cell_2_Outcome, cell_3_Outcome, cell_4_Outcome, cell_5_Outcome]
     let lineAcross_2: number[] = [cell_6_Outcome, cell_7_Outcome, cell_8_Outcome, cell_9_Outcome, cell_10_Outcome]
     let lineAcross_3: number[] = [cell_11_Outcome, cell_12_Outcome, cell_13_Outcome, cell_14_Outcome, cell_15_Outcome]
     let lineAcross_4: number[] = [cell_16_Outcome, cell_17_Outcome, cell_18_Outcome, cell_19_Outcome, cell_20_Outcome]
     let lineAcross_5: number[] = [cell_21_Outcome, cell_22_Outcome, cell_23_Outcome, cell_24_Outcome, cell_25_Outcome]
 
-//Determine the Diagnal Payouts
+    //Determine the Diagnal Payouts
     let lineDiagnalTopDown: number[] = [cell_1_Outcome, cell_7_Outcome, cell_13_Outcome, cell_19_Outcome, cell_25_Outcome]
     let lineDiagnalDownTop: number[] = [cell_21_Outcome, cell_17_Outcome, cell_13_Outcome, cell_9_Outcome, cell_5_Outcome]
 
@@ -188,18 +190,19 @@ for (let index = 0; index < totalSpins; index++) {
     console.log(`[ ${symbol[lineAcross_5[0]]}, ${symbol[lineAcross_5[1]]}, ${symbol[lineAcross_5[2]]}, ${symbol[lineAcross_5[3]]}, ${symbol[lineAcross_5[4]]} ]`)
     console.log("------------")
 
-//Verify the Line Across Wins and Pay
+    //Verify the Line Across Wins and Pay
     verifyLine(lineAcross_1)
     verifyLine(lineAcross_2)
     verifyLine(lineAcross_3)
     verifyLine(lineAcross_4)
     verifyLine(lineAcross_5)
 
-//Verify the Diagnal Line Wins and Pay
+    //Verify the Diagnal Line Wins and Pay
     verifyLine(lineDiagnalTopDown)
     verifyLine(lineDiagnalDownTop)
     console.log(`Total Cash Won on this Spin: ${payperSpin}`)
     payperSpin = 0
+    //var answer = query('Roll Again?');
 }
 //Simluation End Calculations
 returnToPlayer = (totalCashWon / totalBet) * 100
@@ -223,4 +226,4 @@ console.log(`AceWins: ${symbolWins[3]}`)
 console.log(`HeartWins: ${symbolWins[4]}`)
 console.log(`ClubWins: ${symbolWins[5]}`)
 console.log(`DiamondWins: ${symbolWins[6]}`)
-console.log(`SpadeWins: ${symbolWins[7]}`)
+console.log(`SpadeWins: ${symbolWins[7+1]}`)
