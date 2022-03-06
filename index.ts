@@ -6,6 +6,9 @@ const reel_3: number[] = [1, 1, 1, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 
 const reel_4: number[] = [1, 1, 1, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 8, 8, 8, 8]
 const reel_5: number[] = [1, 1, 1, 1, 1, 1, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 8, 8, 8, 8]
 
+const symbols: string[] = ["X", "Jacks", "Queens", "Kings", "Aces", "Hearts","Clubs","Diamond","Spades"]
+const symbol: string[] = ["X", "J", "Q", "K", "A", "H", "C", "D", "S"]
+
 //Payouts 
 const jackPayout: number = .35
 const queenPayout: number = .45
@@ -30,58 +33,69 @@ let heartWins: number = 0
 let clubWins: number = 0
 let diamondWins: number = 0
 let spadeWins: number = 0
+let dummyWin: number = 0
+const symbolWins: number[] = [dummyWin, jackWins, queenWins, kingWins, aceWins, heartWins, clubWins, diamondWins, spadeWins]
 
 let losses: number = 0
 let wins: number = 0
 
+let payperSpin: number = 0
 let totalBet: number = 0
 let totalCashWon: number = 0
 let returnToPlayer: number
 
-
+//Return a Random Number Between 0 and (ReelLength - 4)
 const createRandomNumber: Function = (): number => {
     let rng = Math.floor(Math.random() * (reelLength - 4))
     return rng
 }
 
+let pay: number = 0
+
+//Determine the payout for the winning symbol and multiply
 const payOutLine: Function = (symbol: number, multiplier: number) => {
     for (let index = 0; index < payOutArray.length; index++) {
         const payout = payOutArray[index];
         if (symbol == index) {
-            console.log(`Payout: ${payout}`)
-            totalCashWon = totalCashWon + (payout * multiplier)
+            wins++
+            pay = payout * multiplier
+            totalCashWon = totalCashWon + (pay)
+            symbolWins[symbol - 1] += 1
+
         }
     }
+    return pay
 }
 
+//Checks for 5 in a row
 const allEqual: Function = (line: number[]) => {
     return line.every(cell => cell === line[0]
     )
 }
 
+//Checks what symbol won and call Payout: function(symbol, multiplier)
 const verifyLine: Function = (line: number[]) => {
     if (line) {
+        
         let winningSymbol: number = line[0]
-
+        
         if (allEqual(line)) {
-            payOutLine(winningSymbol, 5)
-            console.log("5 in a Row!")
+            payperSpin += payOutLine(winningSymbol, 5)
+            console.log(`5 ${symbols[winningSymbol]} in a Row! Pays: ${pay}`)
         }
         if (line[0] === line[1] && line[1] === line[2] && line[2] === line[3]) {
-            payOutLine(winningSymbol, 3)
-            console.log("4 in a Row!")
+            payperSpin += payOutLine(winningSymbol, 3)
+            console.log(`4 ${symbols[winningSymbol]} in a Row! Pays: ${pay}`)
 
         }
         if (line[0] === line[1] && line[1] === line[2]) {
-            payOutLine(winningSymbol, 1)
-            console.log("3 in a Row!")
-
+            payperSpin += payOutLine(winningSymbol, 1)
+            console.log(`3 ${symbols[winningSymbol]} in a Row! Pays: ${pay}`)
         }
     } else {
         throw new Error("Line Value Doesn't Exist.")
     }
 }
-
 
 for (let index = 0; index < totalSpins; index++) {
 
@@ -123,7 +137,6 @@ for (let index = 0; index < totalSpins; index++) {
     let cell_24: number = rng_4
     let cell_25: number = rng_5
 
-
     let cell_1_Outcome: number = reel_1[cell_1]
     let cell_2_Outcome: number = reel_2[cell_2]
     let cell_3_Outcome: number = reel_3[cell_3]
@@ -150,7 +163,6 @@ for (let index = 0; index < totalSpins; index++) {
     let cell_24_Outcome: number = reel_4[cell_24]
     let cell_25_Outcome: number = reel_5[cell_25]
 
-
     let lineAcross_1: number[] = [cell_1_Outcome, cell_2_Outcome, cell_3_Outcome, cell_4_Outcome, cell_5_Outcome]
     let lineAcross_2: number[] = [cell_6_Outcome, cell_7_Outcome, cell_8_Outcome, cell_9_Outcome, cell_10_Outcome]
     let lineAcross_3: number[] = [cell_11_Outcome, cell_12_Outcome, cell_13_Outcome, cell_14_Outcome, cell_15_Outcome]
@@ -160,16 +172,14 @@ for (let index = 0; index < totalSpins; index++) {
     let lineDiagnalTopDown: number[] = [cell_1_Outcome, cell_7_Outcome, cell_13_Outcome, cell_19_Outcome, cell_25_Outcome]
     let lineDiagnalDownTop: number[] = [cell_21_Outcome, cell_17_Outcome, cell_13_Outcome, cell_9_Outcome, cell_5_Outcome]
 
-    let allLines: number[] = lineAcross_1.concat(lineAcross_2).concat(lineAcross_3).concat(lineAcross_4).concat(lineAcross_5)
-    console.log(lineAcross_1)
-    console.log(lineAcross_2)
-    console.log(lineAcross_3)
-    console.log(lineAcross_4)
-    console.log(lineAcross_5)
-    console.log("------------")
-
+    //let allLines: number[] = lineAcross_1.concat(lineAcross_2).concat(lineAcross_3).concat(lineAcross_4).concat(lineAcross_5)
     //console.log(allLines)
-
+    console.log(`[ ${symbol[lineAcross_1[0]]}, ${symbol[lineAcross_1[1]]}, ${symbol[lineAcross_1[2]]}, ${symbol[lineAcross_1[3]]}, ${symbol[lineAcross_1[4]]} ]`)        
+    console.log(`[ ${symbol[lineAcross_2[0]]}, ${symbol[lineAcross_2[1]]}, ${symbol[lineAcross_2[2]]}, ${symbol[lineAcross_2[3]]}, ${symbol[lineAcross_2[4]]} ]`)
+    console.log(`[ ${symbol[lineAcross_3[0]]}, ${symbol[lineAcross_3[1]]}, ${symbol[lineAcross_3[2]]}, ${symbol[lineAcross_3[3]]}, ${symbol[lineAcross_3[4]]} ]`)
+    console.log(`[ ${symbol[lineAcross_4[0]]}, ${symbol[lineAcross_4[1]]}, ${symbol[lineAcross_4[2]]}, ${symbol[lineAcross_4[3]]}, ${symbol[lineAcross_4[4]]} ]`)
+    console.log(`[ ${symbol[lineAcross_5[0]]}, ${symbol[lineAcross_5[1]]}, ${symbol[lineAcross_5[2]]}, ${symbol[lineAcross_5[3]]}, ${symbol[lineAcross_5[4]]} ]`)
+    console.log("------------")
 
     //Line Across Wins
     verifyLine(lineAcross_1)
@@ -181,32 +191,29 @@ for (let index = 0; index < totalSpins; index++) {
     //Diagnal Wins 
     verifyLine(lineDiagnalTopDown)
     verifyLine(lineDiagnalDownTop)
+    console.log(`Total Cash Won on this Spin: ${payperSpin}`)
+    payperSpin = 0
 
 }
 
+returnToPlayer = (totalCashWon / totalBet) * 100
+
+let stake: number = totalCashWon - totalBet
+let allWins: number = jackWins + queenWins + aceWins + heartWins + clubWins + diamondWins + spadeWins
+let winRatio: number = allWins/losses
+
+console.log(`TotalCash Bet: ${totalBet}`)
 console.log(`Total Cash Won: ${totalCashWon}`)
-//returnToPlayer = (totalCashWon / totalBet) * 100
-
-
-
-
-// let stake = totalCashWon - totalBet
-// let allWins = jackWins + queenWins + aceWins + heartWins + clubWins + diamondWins + spadeWins
-// let winRatio = allWins/losses
-
-// console.log(`Reel Length: ${reelLength}`)
-// console.log(`TotalWin: ${allWins}`)
-// console.log(`Total Losses: ${losses}`)
-// console.log(`Win Ration: ${winRatio}`)
-// console.log(`TotalBet: ${totalBet}`)
-// console.log(`Stake: ${stake}`)
-// console.log(`JackWins: ${jackWins}`)
-// console.log(`QueenWins: ${queenWins}`)
-// console.log(`KingWins: ${kingWins}`)
-// console.log(`AceWins: ${aceWins}`)
-// console.log(`heartWins: ${shieldWins}`)
-// console.log(`clubWins: ${clubWins}`)
-// console.log(`diamondWins: ${maceWins}`)
-// console.log(`spadeWins: ${swordWins}`)
-// console.log(`Return to Player: ${returnToPlayer}`)
-
+console.log(`Return to Player: ${returnToPlayer}`)
+console.log(`TotalWin: ${wins}`)
+console.log(`Total Losses: ${losses}`)
+console.log(`Win Ratio: ${winRatio}`)
+console.log(`Stake: ${stake}`)
+console.log(`JackWins: ${symbolWins[0]}`)
+console.log(`QueenWins: ${symbolWins[1]}`)
+console.log(`KingWins: ${symbolWins[2]}`)
+console.log(`AceWins: ${symbolWins[3]}`)
+console.log(`HeartWins: ${symbolWins[4]}`)
+console.log(`ClubWins: ${symbolWins[5]}`)
+console.log(`DiamondWins: ${symbolWins[6]}`)
+console.log(`SpadeWins: ${symbolWins[7]}`)
