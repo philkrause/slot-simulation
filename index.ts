@@ -23,7 +23,7 @@ const bonusPayout: number = 3
 const payOutArray: number[] = [jackPayout, queenPayout, kingPayout, acePayout, heartPayout, clubPayout, diamondPayout, spadePayout, bonusPayout]
 
 //Control the Amount of Spins for the Simulator
-const totalSpins: number = 100000
+const totalSpins: number = 1000
 const totalReels: number = 5
 
 const reelLength: number = 100
@@ -68,13 +68,12 @@ const reelCreator: Function = (totalSymbolsPerReel: number, symbolPercentage_1: 
 
     for (let index = 0; index < symbolPercentage_1.length; index++) {
         const percentage = symbolPercentage_1[index];
-        
+        //create total amount of symbols/reel
         totalSymbols = totalSymbolsPerReel * percentage
-        
         let symbol: number = symbolMap[index]
-           
-            for (let index = 0; index < totalSymbols; index++) {
-                reel.push(symbol)
+        //push total amount of symbols to each reel
+        for (let index = 0; index < totalSymbols; index++) {
+            reel.push(symbol)
         }
     }
     
@@ -98,17 +97,19 @@ function shuffle(array: number[]) {
     return array;
   }
 
+//create all the reels
 reelCreator(100, symbolPercentage_1, reel_1)
 reelCreator(100, symbolPercentage_1, reel_2)
 reelCreator(100, symbolPercentage_1, reel_3)
 reelCreator(100, symbolPercentage_1, reel_4)
 reelCreator(100, symbolPercentage_1, reel_5)
+
+//shuffle all the reels
 shuffle(reel_1)
 shuffle(reel_2)
 shuffle(reel_3)
 shuffle(reel_4)
 shuffle(reel_5)
-console.log(`Reel: ${reel_1}`)
 
 //Return a Random Number Between 0 and (ReelLength - 4)
 const createRandomNumber: Function = (): number => {
@@ -243,8 +244,8 @@ for (let index = 0; index < totalSpins; index++) {
     let lineDiagnalTopDown: number[] = [cell_1_Outcome, cell_7_Outcome, cell_13_Outcome, cell_19_Outcome, cell_25_Outcome]
     let lineDiagnalDownTop: number[] = [cell_21_Outcome, cell_17_Outcome, cell_13_Outcome, cell_9_Outcome, cell_5_Outcome]
 
-    //let allLines: number[] = lineAcross_1.concat(lineAcross_2).concat(lineAcross_3).concat(lineAcross_4).concat(lineAcross_5)
-    //console.log(allLines)
+    let allLines: number[] = lineAcross_1.concat(lineAcross_2).concat(lineAcross_3).concat(lineAcross_4).concat(lineAcross_5)
+    console.log(allLines)
     console.log(`[ ${symbol[lineAcross_1[0]]}, ${symbol[lineAcross_1[1]]}, ${symbol[lineAcross_1[2]]}, ${symbol[lineAcross_1[3]]}, ${symbol[lineAcross_1[4]]} ]`)
     console.log(`[ ${symbol[lineAcross_2[0]]}, ${symbol[lineAcross_2[1]]}, ${symbol[lineAcross_2[2]]}, ${symbol[lineAcross_2[3]]}, ${symbol[lineAcross_2[4]]} ]`)
     console.log(`[ ${symbol[lineAcross_3[0]]}, ${symbol[lineAcross_3[1]]}, ${symbol[lineAcross_3[2]]}, ${symbol[lineAcross_3[3]]}, ${symbol[lineAcross_3[4]]} ]`)
@@ -271,8 +272,8 @@ returnToPlayer = (totalCashWon / totalBet) * 100
 
 let stake: number = totalCashWon - totalBet
 let allWins: number = symbolWins[0] + symbolWins[1] + symbolWins[2] + symbolWins[3] + symbolWins[4] + symbolWins[5] +symbolWins[6] + symbolWins[7]
-let winRatio: number = allWins / losses
 losses = totalSpins - (allWins/3)
+let winRatio: number = allWins / losses
 
 //Logs
 console.log(`TotalCash Bet: ${totalBet}`)
