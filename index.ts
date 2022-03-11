@@ -23,7 +23,7 @@ const bonusPayout: number = 3
 const payOutArray: number[] = [jackPayout, queenPayout, kingPayout, acePayout, heartPayout, clubPayout, diamondPayout, spadePayout, bonusPayout]
 
 //Control the Amount of Spins for the Simulator
-const totalSpins: number = 1
+const totalSpins: number = 10000
 const totalReels: number = 5
 
 const reelLength: number = 100
@@ -65,7 +65,7 @@ const reelCreator: Function = (totalSymbolsPerReel: number, symbolPercentage_1: 
     let totalSymbols: number = 0
     //create array
     let symbolMap: number[] = [...Array(symbol.length).keys()]
-    
+
     for (let index = 0; index < symbolPercentage_1.length; index++) {
         const percentage = symbolPercentage_1[index];
         
@@ -80,11 +80,34 @@ const reelCreator: Function = (totalSymbolsPerReel: number, symbolPercentage_1: 
     
 }
 
+function shuffle(array: number[]) {
+    let currentIndex = array.length,  randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+  }
+
 reelCreator(100, symbolPercentage_1, reel_1)
 reelCreator(100, symbolPercentage_1, reel_2)
 reelCreator(100, symbolPercentage_1, reel_3)
 reelCreator(100, symbolPercentage_1, reel_4)
 reelCreator(100, symbolPercentage_1, reel_5)
+shuffle(reel_1)
+shuffle(reel_2)
+shuffle(reel_3)
+shuffle(reel_4)
+shuffle(reel_5)
 console.log(`Reel: ${reel_1}`)
 
 //Return a Random Number Between 0 and (ReelLength - 4)
@@ -247,8 +270,9 @@ for (let index = 0; index < totalSpins; index++) {
 returnToPlayer = (totalCashWon / totalBet) * 100
 
 let stake: number = totalCashWon - totalBet
-let allWins: number = jackWins + queenWins + aceWins + heartWins + clubWins + diamondWins + spadeWins
+let allWins: number = symbolWins[0] + symbolWins[1] + symbolWins[2] + symbolWins[3] + symbolWins[4] + symbolWins[5] +symbolWins[6] + symbolWins[7]
 let winRatio: number = allWins / losses
+losses = totalSpins - allWins
 
 //Logs
 console.log(`TotalCash Bet: ${totalBet}`)
