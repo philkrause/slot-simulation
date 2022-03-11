@@ -1,10 +1,11 @@
 const query = require('cli-interact').getYesNo;
 
-const symbolPercentage_1: number[] = [.2, .05, .05, .1, .1, .1, .1, .1, .1, .1]
-const symbolPercentage_2: number[] = [.2, .05, .05, .1, .1, .1, .1, .1, .1, .1]
-const symbolPercentage_3: number[] = [.2, .05, .05, .1, .1, .1, .1, .1, .1, .1]
-const symbolPercentage_4: number[] = [.2, .05, .05, .1, .1, .1, .1, .1, .1, .1]
-const symbolPercentage_5: number[] = [.2, .05, .05, .1, .1, .1, .1, .1, .1, .1]
+//Symbol to Reel Ratio. Each reel must add up to 1(100%)
+const symbolPercentage_1: number[] = [.2, .1, .05, .1, .1, .1, .1, .1, .05, .05]
+const symbolPercentage_2: number[] = [.2, .1, .05, .1, .1, .1, .1, .1, .05, .05]
+const symbolPercentage_3: number[] = [.2, .1, .05, .1, .1, .1, .1, .1, .05, .05]
+const symbolPercentage_4: number[] = [.2, .1, .05, .1, .1, .1, .1, .1, .05, .05]
+const symbolPercentage_5: number[] = [.2, .1, .05, .1, .1, .1, .1, .1, .05, .05]
 
 //Used for Logs
 const symbols: string[] = ["Jacks", "Queens", "Kings", "Aces", "Hearts", "Clubs", "Diamond", "Spades", "Bonus", "Wilds"]
@@ -20,7 +21,8 @@ const clubPayout: number = 1.50
 const diamondPayout: number = 1.75
 const spadePayout: number = 2
 const bonusPayout: number = 3
-const payOutArray: number[] = [jackPayout, queenPayout, kingPayout, acePayout, heartPayout, clubPayout, diamondPayout, spadePayout, bonusPayout]
+const wildPayout: number = 4
+const payOutArray: number[] = [jackPayout, queenPayout, kingPayout, acePayout, heartPayout, clubPayout, diamondPayout, spadePayout, bonusPayout, wildPayout]
 
 //Control the Amount of Spins for the Simulator
 const totalSpins: number = 1000
@@ -79,8 +81,9 @@ const reelCreator: Function = (totalSymbolsPerReel: number, symbolPercentage_1: 
     
 }
 
-function shuffle(array: number[]) {
-    let currentIndex = array.length,  randomIndex;
+//Shuffle function for each reel layout
+const shuffle: Function = (reel: number[]) => {
+    let currentIndex = reel.length,  randomIndex;
   
     // While there remain elements to shuffle...
     while (currentIndex != 0) {
@@ -90,11 +93,10 @@ function shuffle(array: number[]) {
       currentIndex--;
   
       // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
+      [reel[currentIndex], reel[randomIndex]] = [
+        reel[randomIndex], reel[currentIndex]];
     }
-  
-    return array;
+    return reel;
   }
 
 //create all the reels
@@ -153,7 +155,7 @@ const verifyLine: Function = (line: number[]) => {
             console.log(`4 ${symbols[winningSymbol]} in a Row! Pays: ${pay * 1.5}`)
         }
         //3 in a row
-        if (line[0] === line[1] && line[1] === line[2]) {
+        if (line[0] === line[1] && line[1] === line[2] && line[0] === line[2]) {
             payperSpin += payOutLine(winningSymbol, 1)
             console.log(`3 ${symbols[winningSymbol]} in a Row! Pays: ${pay}`)
         }
@@ -241,8 +243,8 @@ for (let index = 0; index < totalSpins; index++) {
     let lineAcross_5: number[] = [cell_21_Outcome, cell_22_Outcome, cell_23_Outcome, cell_24_Outcome, cell_25_Outcome]
 
     //Determine the Diagnal Payouts
-    let lineDiagnalTopDown: number[] = [cell_1_Outcome, cell_7_Outcome, cell_13_Outcome, cell_19_Outcome, cell_25_Outcome]
-    let lineDiagnalDownTop: number[] = [cell_21_Outcome, cell_17_Outcome, cell_13_Outcome, cell_9_Outcome, cell_5_Outcome]
+    //let lineDiagnalTopDown: number[] = [cell_1_Outcome, cell_7_Outcome, cell_13_Outcome, cell_19_Outcome, cell_25_Outcome]
+    //let lineDiagnalDownTop: number[] = [cell_21_Outcome, cell_17_Outcome, cell_13_Outcome, cell_9_Outcome, cell_5_Outcome]
 
     let allLines: number[] = lineAcross_1.concat(lineAcross_2).concat(lineAcross_3).concat(lineAcross_4).concat(lineAcross_5)
     console.log(allLines)
@@ -261,8 +263,8 @@ for (let index = 0; index < totalSpins; index++) {
     verifyLine(lineAcross_5)
 
     //Check for Diagnal Line Wins and Pay
-    verifyLine(lineDiagnalTopDown)
-    verifyLine(lineDiagnalDownTop)
+    //verifyLine(lineDiagnalTopDown)
+    //verifyLine(lineDiagnalDownTop)
     console.log(`Total Cash Won on this Spin: ${payperSpin}`)
     payperSpin = 0
     //let answer = query('Roll Again?');
