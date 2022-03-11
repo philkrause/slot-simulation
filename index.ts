@@ -1,10 +1,10 @@
 const query = require('cli-interact').getYesNo;
 
-const symbolPercentage_1: number[] = [.5, .05, .05, 0, 0, 0, .1, .1, .1, .1]
-const symbolPercentage_2: number[] = [.5, .05, .05, 0, 0, 0, .1, .1, .1, .1]
-const symbolPercentage_3: number[] = [.5, .05, .05, 0, 0, 0, .1, .1, .1, .1]
-const symbolPercentage_4: number[] = [.5, .05, .05, 0, 0, 0, .1, .1, .1, .1]
-const symbolPercentage_5: number[] = [.5, .05, .05, 0, 0, 0, .1, .1, .1, .1]
+const symbolPercentage_1: number[] = [.2, .05, .05, .1, .1, .1, .1, .1, .1, .1]
+const symbolPercentage_2: number[] = [.2, .05, .05, .1, .1, .1, .1, .1, .1, .1]
+const symbolPercentage_3: number[] = [.2, .05, .05, .1, .1, .1, .1, .1, .1, .1]
+const symbolPercentage_4: number[] = [.2, .05, .05, .1, .1, .1, .1, .1, .1, .1]
+const symbolPercentage_5: number[] = [.2, .05, .05, .1, .1, .1, .1, .1, .1, .1]
 
 //Used for Logs
 const symbols: string[] = ["Jacks", "Queens", "Kings", "Aces", "Hearts", "Clubs", "Diamond", "Spades", "Bonus", "Wilds"]
