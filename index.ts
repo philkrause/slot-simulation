@@ -272,13 +272,13 @@ returnToPlayer = (totalCashWon / totalBet) * 100
 let stake: number = totalCashWon - totalBet
 let allWins: number = symbolWins[0] + symbolWins[1] + symbolWins[2] + symbolWins[3] + symbolWins[4] + symbolWins[5] +symbolWins[6] + symbolWins[7]
 let winRatio: number = allWins / losses
-losses = totalSpins - allWins
+losses = totalSpins - (allWins/3)
 
 //Logs
 console.log(`TotalCash Bet: ${totalBet}`)
 console.log(`Total Cash Won: ${totalCashWon}`)
 console.log(`Return to Player: ${returnToPlayer}%`)
-console.log(`TotalWins: ${allWins}`)
+console.log(`TotalWins: ${allWins/3}`)
 console.log(`Total Losses: ${losses}`)
 console.log(`Win Ratio: ${winRatio}`)
 console.log(`Stake: ${stake}`)
