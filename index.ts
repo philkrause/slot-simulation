@@ -1,16 +1,14 @@
 const query = require('cli-interact').getYesNo;
 
-//Reel Distribution
-//0Jack , 1Queen, 2King, 3Ace, 4Heart, 5Club, 6Diamond, 7Spade
-const reel_1: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 7, 7, 7, 7, 7, 7]
-const reel_2: number[] = [0, 0, 0, 0, 0, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6, 7, 7, 7, 7, 7, 7, 7]
-const reel_3: number[] = [0, 0, 0, 0, 0, 0, 0, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7]
-const reel_4: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7]
-const reel_5: number[] = [0, 0, 0, 0, 0, 0, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7]
+const symbolPercentage_1: number[] = [.5, .05, .05, 0, 0, 0, .1, .1, .1, .1]
+const symbolPercentage_2: number[] = [.5, .05, .05, 0, 0, 0, .1, .1, .1, .1]
+const symbolPercentage_3: number[] = [.5, .05, .05, 0, 0, 0, .1, .1, .1, .1]
+const symbolPercentage_4: number[] = [.5, .05, .05, 0, 0, 0, .1, .1, .1, .1]
+const symbolPercentage_5: number[] = [.5, .05, .05, 0, 0, 0, .1, .1, .1, .1]
 
 //Used for Logs
-const symbols: string[] = ["Jacks", "Queens", "Kings", "Aces", "Hearts", "Clubs", "Diamond", "Spades"]
-const symbol: string[] = ["J", "Q", "K", "A", "H", "C", "D", "S"]
+const symbols: string[] = ["Jacks", "Queens", "Kings", "Aces", "Hearts", "Clubs", "Diamond", "Spades", "Bonus", "Wilds"]
+const symbol: string[] = ["J", "Q", "K", "A", "H", "C", "D", "S", "B", "W"]
 
 //Payouts 
 const jackPayout: number = .35
@@ -21,12 +19,14 @@ const heartPayout: number = 1.25
 const clubPayout: number = 1.50
 const diamondPayout: number = 1.75
 const spadePayout: number = 2
-const payOutArray: number[] = [jackPayout, queenPayout, kingPayout, acePayout, heartPayout, clubPayout, diamondPayout, spadePayout]
+const bonusPayout: number = 3
+const payOutArray: number[] = [jackPayout, queenPayout, kingPayout, acePayout, heartPayout, clubPayout, diamondPayout, spadePayout, bonusPayout]
 
 //Control the Amount of Spins for the Simulator
-const totalSpins: number = 100
+const totalSpins: number = 1
 const totalReels: number = 5
-const reelLength: number = reel_1.length
+
+const reelLength: number = 100
 let totalCells: number = reelLength * totalReels
 
 let jackWins: number = 0
@@ -37,7 +37,10 @@ let heartWins: number = 0
 let clubWins: number = 0
 let diamondWins: number = 0
 let spadeWins: number = 0
-const symbolWins: number[] = [jackWins, queenWins, kingWins, aceWins, heartWins, clubWins, diamondWins, spadeWins]
+let bonusWins: number = 0
+let wildWins: number = 0
+
+const symbolWins: number[] = [jackWins, queenWins, kingWins, aceWins, heartWins, clubWins, diamondWins, spadeWins, bonusWins, wildWins]
 
 let losses: number = 0
 let wins: number = 0
@@ -48,6 +51,42 @@ let totalBet: number = 0
 let totalCashWon: number = 0
 let returnToPlayer: number
 
+//0Jack , 1Queen, 2King, 3Ace, 4Heart, 5Club, 6Diamond, 7Spade, 8Bonus, 9Wild
+const reel_1: number[] = []
+const reel_2: number[] = []
+const reel_3: number[] = []
+const reel_4: number[] = []
+const reel_5: number[] = []
+
+
+//Create the Reels Based on the symbol Percentages and total Amount of Cells 
+const reelCreator: Function = (totalSymbolsPerReel: number, symbolPercentage_1: number[], reel: number[]) => {
+    if(symbolPercentage_1.reduce((a, b) => a+b,0) > 1) throw new Error("OverCommitted Symbol Percentage")
+    let totalSymbols: number = 0
+    //create array
+    let symbolMap: number[] = [...Array(symbol.length).keys()]
+    
+    for (let index = 0; index < symbolPercentage_1.length; index++) {
+        const percentage = symbolPercentage_1[index];
+        
+        totalSymbols = totalSymbolsPerReel * percentage
+        
+        let symbol: number = symbolMap[index]
+           
+            for (let index = 0; index < totalSymbols; index++) {
+                reel.push(symbol)
+        }
+    }
+    
+}
+
+reelCreator(100, symbolPercentage_1, reel_1)
+reelCreator(100, symbolPercentage_1, reel_2)
+reelCreator(100, symbolPercentage_1, reel_3)
+reelCreator(100, symbolPercentage_1, reel_4)
+reelCreator(100, symbolPercentage_1, reel_5)
+console.log(`Reel: ${reel_1}`)
+
 //Return a Random Number Between 0 and (ReelLength - 4)
 const createRandomNumber: Function = (): number => {
     let rng = Math.floor(Math.random() * (reelLength - 4))
@@ -56,14 +95,14 @@ const createRandomNumber: Function = (): number => {
 
 //Determine the payout for the winning symbol
 const payOutLine: Function = (symbol: number, multiplier: number) => {
-    for (let index = 0; index < payOutArray.length; index++) {
-        const payout = payOutArray[index];
+    for (let payout = 0; payout < payOutArray.length; payout++) {
+        const payoutValue = payOutArray[payout];
 
-        if (symbol == index) {
-            pay = payout * multiplier
+        if (symbol == payout) {
+            pay = payoutValue * multiplier
             totalCashWon += pay
             symbolWins[symbol] += 1
-        } 
+        }
     }
     return pay
 }
@@ -79,7 +118,6 @@ const verifyLine: Function = (line: number[]) => {
     if (line) {
 
         let winningSymbol: number = line[0]
-        let win = 0
         //5 in a row
         if (allEqual(line)) {
             payperSpin += payOutLine(winningSymbol, 2)
@@ -191,19 +229,19 @@ for (let index = 0; index < totalSpins; index++) {
     console.log(`[ ${symbol[lineAcross_5[0]]}, ${symbol[lineAcross_5[1]]}, ${symbol[lineAcross_5[2]]}, ${symbol[lineAcross_5[3]]}, ${symbol[lineAcross_5[4]]} ]`)
     console.log("------------")
 
-    //Verify the Line Across Wins and Pay
+    //Check each Line and Payout Wins
     verifyLine(lineAcross_1)
     verifyLine(lineAcross_2)
     verifyLine(lineAcross_3)
     verifyLine(lineAcross_4)
     verifyLine(lineAcross_5)
 
-    //Verify the Diagnal Line Wins and Pay
+    //Check for Diagnal Line Wins and Pay
     verifyLine(lineDiagnalTopDown)
     verifyLine(lineDiagnalDownTop)
     console.log(`Total Cash Won on this Spin: ${payperSpin}`)
     payperSpin = 0
-    //var answer = query('Roll Again?');
+    //let answer = query('Roll Again?');
 }
 //Simluation End Calculations
 returnToPlayer = (totalCashWon / totalBet) * 100
@@ -216,7 +254,7 @@ let winRatio: number = allWins / losses
 console.log(`TotalCash Bet: ${totalBet}`)
 console.log(`Total Cash Won: ${totalCashWon}`)
 console.log(`Return to Player: ${returnToPlayer}%`)
-console.log(`TotalWin: ${wins}`) 
+console.log(`TotalWins: ${allWins}`)
 console.log(`Total Losses: ${losses}`)
 console.log(`Win Ratio: ${winRatio}`)
 console.log(`Stake: ${stake}`)
