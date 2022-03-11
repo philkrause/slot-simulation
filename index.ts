@@ -23,7 +23,7 @@ const bonusPayout: number = 3
 const payOutArray: number[] = [jackPayout, queenPayout, kingPayout, acePayout, heartPayout, clubPayout, diamondPayout, spadePayout, bonusPayout]
 
 //Control the Amount of Spins for the Simulator
-const totalSpins: number = 10000
+const totalSpins: number = 100000
 const totalReels: number = 5
 
 const reelLength: number = 100
