@@ -1,4 +1,4 @@
-const query = require('cli-interact').getYesNo;
+//0Jack , 1Queen, 2King, 3Ace, 4Heart, 5Club, 6Diamond, 7Spade, 8Bonus, 9Wild
 
 //Symbol to Reel Ratio. Each reel must add up to 1(100%)
 const symbolPercentage_1: number[] = [.2, .1, .05, .1, .1, .1, .1, .1, .05, .05]
@@ -25,7 +25,7 @@ const wildPayout: number = 4
 const payOutArray: number[] = [jackPayout, queenPayout, kingPayout, acePayout, heartPayout, clubPayout, diamondPayout, spadePayout, bonusPayout, wildPayout]
 
 //Control the Amount of Spins for the Simulator
-const totalSpins: number = 1000
+const totalSpins: number = 1
 const totalReels: number = 5
 
 const reelLength: number = 100
@@ -53,7 +53,6 @@ let totalBet: number = 0
 let totalCashWon: number = 0
 let returnToPlayer: number
 
-//0Jack , 1Queen, 2King, 3Ace, 4Heart, 5Club, 6Diamond, 7Spade, 8Bonus, 9Wild
 const reel_1: number[] = []
 const reel_2: number[] = []
 const reel_3: number[] = []
@@ -106,6 +105,7 @@ reelCreator(100, symbolPercentage_1, reel_3)
 reelCreator(100, symbolPercentage_1, reel_4)
 reelCreator(100, symbolPercentage_1, reel_5)
 
+
 //shuffle all the reels
 shuffle(reel_1)
 shuffle(reel_2)
@@ -113,9 +113,12 @@ shuffle(reel_3)
 shuffle(reel_4)
 shuffle(reel_5)
 
+console.log(`reel1: ${reel_1}`)
 //Return a Random Number Between 0 and (ReelLength - 4)
 const createRandomNumber: Function = (): number => {
     let rng = Math.floor(Math.random() * (reelLength - 4))
+    if(rng > 96) rng === 96
+    if(rng <= 4 ) rng * 4
     return rng
 }
 
@@ -171,11 +174,13 @@ for (let index = 0; index < totalSpins; index++) {
     totalBet++
 
     //Create 5 Random Numbers for all 5 Reels
-    let rng_1: number = createRandomNumber()
+    let rng_1: number = 0
     let rng_2: number = createRandomNumber()
     let rng_3: number = createRandomNumber()
     let rng_4: number = createRandomNumber()
     let rng_5: number = createRandomNumber()
+
+    console.log(`rng1: ${rng_1  }`)
 
     //Determine Outcome of All Postiions
     let cell_1: number = rng_1 + 4
@@ -241,10 +246,12 @@ for (let index = 0; index < totalSpins; index++) {
     let lineAcross_3: number[] = [cell_11_Outcome, cell_12_Outcome, cell_13_Outcome, cell_14_Outcome, cell_15_Outcome]
     let lineAcross_4: number[] = [cell_16_Outcome, cell_17_Outcome, cell_18_Outcome, cell_19_Outcome, cell_20_Outcome]
     let lineAcross_5: number[] = [cell_21_Outcome, cell_22_Outcome, cell_23_Outcome, cell_24_Outcome, cell_25_Outcome]
-
+    let testLine: number[] = [cell_1_Outcome, cell_6_Outcome, cell_11_Outcome, cell_16_Outcome, cell_21_Outcome]
     //Determine the Diagnal Payouts
     //let lineDiagnalTopDown: number[] = [cell_1_Outcome, cell_7_Outcome, cell_13_Outcome, cell_19_Outcome, cell_25_Outcome]
     //let lineDiagnalDownTop: number[] = [cell_21_Outcome, cell_17_Outcome, cell_13_Outcome, cell_9_Outcome, cell_5_Outcome]
+
+    console.log(`TestLINE: ${testLine}`)
 
     let allLines: number[] = lineAcross_1.concat(lineAcross_2).concat(lineAcross_3).concat(lineAcross_4).concat(lineAcross_5)
     console.log(allLines)
@@ -273,17 +280,18 @@ for (let index = 0; index < totalSpins; index++) {
 returnToPlayer = (totalCashWon / totalBet) * 100
 
 let stake: number = totalCashWon - totalBet
-let allWins: number = symbolWins[0] + symbolWins[1] + symbolWins[2] + symbolWins[3] + symbolWins[4] + symbolWins[5] +symbolWins[6] + symbolWins[7]
+let allWins: number = symbolWins[0] + symbolWins[1] + symbolWins[2] + symbolWins[3] + symbolWins[4] + symbolWins[5] +symbolWins[6] + symbolWins[7] + symbolWins[8] + symbolWins[9]
 losses = totalSpins - (allWins/3)
-let winRatio: number = allWins / losses
+let winPercentage: number = Math.floor((allWins / losses) * 100)
 
 //Logs
+console.log("------------")
 console.log(`TotalCash Bet: ${totalBet}`)
 console.log(`Total Cash Won: ${totalCashWon}`)
 console.log(`Return to Player: ${returnToPlayer}%`)
 console.log(`TotalWins: ${allWins/3}`)
 console.log(`Total Losses: ${losses}`)
-console.log(`Win Ratio: ${winRatio}`)
+console.log(`Win Percentage: ${winPercentage}%`)
 console.log(`Stake: ${stake}`)
 console.log(`JackWins: ${symbolWins[0]}`)
 console.log(`QueenWins: ${symbolWins[1]}`)
