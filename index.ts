@@ -1,18 +1,18 @@
 //0Jack , 1Queen, 2King, 3Ace, 4Heart, 5Club, 6Diamond, 7Spade, 8Bonus, 9Wild
 
 //Symbol to Reel Ratio. Each reel must add up to 1(100%)
-const symbolPercentage_1: number[] = [.2, .1, .05, .1, .1, .1, .1, .1, .05, .05]
-const symbolPercentage_2: number[] = [.2, .1, .05, .1, .1, .1, .1, .1, .05, .05]
-const symbolPercentage_3: number[] = [.2, .1, .05, .1, .1, .1, .1, .1, .05, .05]
-const symbolPercentage_4: number[] = [.2, .1, .05, .1, .1, .1, .1, .1, .05, .05]
-const symbolPercentage_5: number[] = [.2, .1, .05, .1, .1, .1, .1, .1, .05, .05]
+const symbolPercentage_1: number[] = [.2, .1, .1, .1, .1, .1, .1, .05, .05, .05]
+const symbolPercentage_2: number[] = [.2, .1, .1, .1, .1, .1, .1, .05, .05, .05]
+const symbolPercentage_3: number[] = [.2, .1, .1, .1, .1, .1, .1, .05, .05, .05]
+const symbolPercentage_4: number[] = [.2, .1, .1, .1, .1, .1, .1, .05, .05, .05]
+const symbolPercentage_5: number[] = [.2, .1, .1, .1, .1, .1, .1, .05, .05, .05]
 
 //Used for Logs
 const symbols: string[] = ["Jacks", "Queens", "Kings", "Aces", "Hearts", "Clubs", "Diamond", "Spades", "Bonus", "Wilds"]
 const symbol: string[] = ["J", "Q", "K", "A", "H", "C", "D", "S", "B", "W"]
 
 //Payouts 
-const jackPayout: number = .35
+const jackPayout: number = 1.35
 const queenPayout: number = .45
 const kingPayout: number = .55
 const acePayout: number = 1
@@ -25,7 +25,7 @@ const wildPayout: number = 4
 const payOutArray: number[] = [jackPayout, queenPayout, kingPayout, acePayout, heartPayout, clubPayout, diamondPayout, spadePayout, bonusPayout, wildPayout]
 
 //Control the Amount of Spins for the Simulator
-const totalSpins: number = 1
+const totalSpins: number = 10000
 const totalReels: number = 5
 
 const reelLength: number = 100
@@ -113,12 +113,17 @@ shuffle(reel_3)
 shuffle(reel_4)
 shuffle(reel_5)
 
-console.log(`reel1: ${reel_1}`)
+// console.log(`reel1: ${reel_1}`)
+// console.log(`reel2: ${reel_2}`)
+// console.log(`reel3: ${reel_3}`)
+// console.log(`reel4: ${reel_4}`)
+// console.log(`reel5: ${reel_5}`)
+
 //Return a Random Number Between 0 and (ReelLength - 4)
 const createRandomNumber: Function = (): number => {
-    let rng = Math.floor(Math.random() * (reelLength - 4))
-    if(rng > 96) rng === 96
-    if(rng <= 4 ) rng * 4
+    let rng = Math.floor(Math.random() * (reelLength - 10))
+    if(rng < 0) rng === 0
+    //console.log(`RNG: ${rng}`)
     return rng
 }
 
@@ -174,13 +179,11 @@ for (let index = 0; index < totalSpins; index++) {
     totalBet++
 
     //Create 5 Random Numbers for all 5 Reels
-    let rng_1: number = 0
+    let rng_1: number = createRandomNumber()
     let rng_2: number = createRandomNumber()
     let rng_3: number = createRandomNumber()
     let rng_4: number = createRandomNumber()
     let rng_5: number = createRandomNumber()
-
-    console.log(`rng1: ${rng_1  }`)
 
     //Determine Outcome of All Postiions
     let cell_1: number = rng_1 + 4
@@ -246,15 +249,25 @@ for (let index = 0; index < totalSpins; index++) {
     let lineAcross_3: number[] = [cell_11_Outcome, cell_12_Outcome, cell_13_Outcome, cell_14_Outcome, cell_15_Outcome]
     let lineAcross_4: number[] = [cell_16_Outcome, cell_17_Outcome, cell_18_Outcome, cell_19_Outcome, cell_20_Outcome]
     let lineAcross_5: number[] = [cell_21_Outcome, cell_22_Outcome, cell_23_Outcome, cell_24_Outcome, cell_25_Outcome]
-    let testLine: number[] = [cell_1_Outcome, cell_6_Outcome, cell_11_Outcome, cell_16_Outcome, cell_21_Outcome]
+    // let testLine1: number[] = [cell_1_Outcome, cell_6_Outcome, cell_11_Outcome, cell_16_Outcome, cell_21_Outcome]
+    // let testLine2: number[] = [cell_2_Outcome, cell_7_Outcome, cell_12_Outcome, cell_17_Outcome, cell_22_Outcome]
+    // let testLine3: number[] = [cell_3_Outcome, cell_8_Outcome, cell_13_Outcome, cell_18_Outcome, cell_23_Outcome]
+    // let testLine4: number[] = [cell_4_Outcome, cell_9_Outcome, cell_14_Outcome, cell_19_Outcome, cell_24_Outcome]
+    // let testLine5: number[] = [cell_5_Outcome, cell_10_Outcome, cell_15_Outcome, cell_20_Outcome, cell_25_Outcome]
+
     //Determine the Diagnal Payouts
     //let lineDiagnalTopDown: number[] = [cell_1_Outcome, cell_7_Outcome, cell_13_Outcome, cell_19_Outcome, cell_25_Outcome]
     //let lineDiagnalDownTop: number[] = [cell_21_Outcome, cell_17_Outcome, cell_13_Outcome, cell_9_Outcome, cell_5_Outcome]
 
-    console.log(`TestLINE: ${testLine}`)
+    // console.log(`TestLINE1: ${testLine1}`)
+    // console.log(`TestLINE2: ${testLine2}`)
+    // console.log(`TestLINE3: ${testLine3}`)
+    // console.log(`TestLINE4: ${testLine4}`)
+    // console.log(`TestLINE5: ${testLine5}`)
 
-    let allLines: number[] = lineAcross_1.concat(lineAcross_2).concat(lineAcross_3).concat(lineAcross_4).concat(lineAcross_5)
-    console.log(allLines)
+
+    //let allLines: number[] = lineAcross_1.concat(lineAcross_2).concat(lineAcross_3).concat(lineAcross_4).concat(lineAcross_5)
+   // console.log(allLines)
     console.log(`[ ${symbol[lineAcross_1[0]]}, ${symbol[lineAcross_1[1]]}, ${symbol[lineAcross_1[2]]}, ${symbol[lineAcross_1[3]]}, ${symbol[lineAcross_1[4]]} ]`)
     console.log(`[ ${symbol[lineAcross_2[0]]}, ${symbol[lineAcross_2[1]]}, ${symbol[lineAcross_2[2]]}, ${symbol[lineAcross_2[3]]}, ${symbol[lineAcross_2[4]]} ]`)
     console.log(`[ ${symbol[lineAcross_3[0]]}, ${symbol[lineAcross_3[1]]}, ${symbol[lineAcross_3[2]]}, ${symbol[lineAcross_3[3]]}, ${symbol[lineAcross_3[4]]} ]`)
